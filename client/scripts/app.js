@@ -29,7 +29,7 @@ app.init = function() {
 app.send = function(message) {
   var result = app.init();
   result.type = 'POST';
-  result.data = JSON.stringify(message);
+  result.data = message;
   return $.ajax(result);
 };
 
@@ -37,7 +37,8 @@ app.fetch = function(message) {
   var request = app.init();
   request.type = 'GET';
   request.data = 'order=-createdAT';
-  return $.ajax(request);
+  var result = $.ajax(request);
+  return result;
 };
 
 //jQuery
@@ -45,36 +46,36 @@ app.fetch = function(message) {
 $(document).ready(function () {
   var $chats = $('#chats');
 
-  $.ajax({
-      // This is the url you should use to communicate with the parse API server.
-    url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
-    type: 'GET',
-    data: 'order=-createdAt',
-    success: function (data) {
-      console.log(data);
-      var messages = data.results;
-      for (var i = 0; i < messages.length; i++) {
-        var userName = messages[i].username;
-        var roomName = messages[i].roomname;
-        var text = messages[i].text;
-        var createdTime = messages[i].createdAt;
+  // $.ajax({
+  //     // This is the url you should use to communicate with the parse API server.
+  //   url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
+  //   type: 'GET',
+  //   data: 'order=-createdAt',
+  //   success: function (data) {
+  //     console.log(data);
+  //     var messages = data.results;
+  //     for (var i = 0; i < messages.length; i++) {
+  //       var userName = messages[i].username;
+  //       var roomName = messages[i].roomname;
+  //       var text = messages[i].text;
+  //       var createdTime = messages[i].createdAt;
 
-        var $message = $('<div></div>');
-        $message.addClass('message');
+  //       var $message = $('<div></div>');
+  //       $message.addClass('message');
         
-        $message.text(`username: ${userName} 
-        roomname: ${roomName} 
-        message:'${text}' 
-        created: ${createdTime}`);
+  //       $message.text(`username: ${userName} 
+  //       roomname: ${roomName} 
+  //       message:'${text}' 
+  //       created: ${createdTime}`);
         
-        $message.appendTo($msgContainer);
-      }
-    },
-    error: function (data) {
-      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-      console.error('chatterbox: Failed to send message', data);
-    }
-  });
+  //       $message.appendTo($msgContainer);
+  //     }
+  //   },
+  //   error: function (data) {
+  //     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+  //     console.error('chatterbox: Failed to send message', data);
+  //   }
+  // });
 
 });
 
