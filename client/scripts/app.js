@@ -5,7 +5,9 @@
 
 //METHODS:
 
-var app = {};
+var app = {
+  server: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages'
+};
 
 app.init = function() {
   return {
@@ -36,7 +38,7 @@ app.send = function(message) {
 app.fetch = function(message) {
   var request = app.init();
   request.type = 'GET';
-  request.data = 'order=-createdAT';
+  request.data = 'order=-createdAt';
   var result = $.ajax(request);
   return result;
 };
