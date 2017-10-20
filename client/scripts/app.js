@@ -37,6 +37,7 @@ $(document).ready(function () {
       // This is the url you should use to communicate with the parse API server.
     url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
     type: 'GET',
+    data: 'order=-createdAt',
     success: function (data) {
       console.log(data);
       var messages = data.results;
