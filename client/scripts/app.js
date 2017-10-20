@@ -3,35 +3,47 @@
 //    App ID: 72b8e073a4abde10221ce95f38ed1c63bd7f3d6b
 //    API Key: cf1ce23a61e2a40702c347b7dc1e0af8c28f6c7a
 
+//METHODS:
 
-$(document).ready(function () {
-  var $chats = $('#chats');
-  //maybe move this <div> creation over to the html?
-  var $msgContainer = $('<div></div>');
-  $msgContainer.addClass('msgContainer');
-  $msgContainer.appendTo($chats);
-  
-  var message = {
-    username: 'user',
-    text: 'hey',
-    roomname: 'testRoom'
-  };
+var app = {};
 
-  $.ajax({
-    // This is the url you should use to communicate with the parse API server.
+app.init = function() {
+  return {
     url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
-    type: 'POST',
-    data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-      console.log('chatterbox: Message sent', data);
+      console.log('chatterbox: Message sent');
     },
     error: function (data) {
       console.error('chatterbox: Failed to send message', data);
     }
-  });
+  };
+};
 
+  // var message = {
+  //   username: 'user',
+  //   text: 'hey',
+  //   roomname: 'testRoom'
+  // };
 
+app.send = function(message) {
+  var result = app.init();
+  result.type = 'POST';
+  result.data = JSON.stringify(message);
+  return $.ajax(result);
+};
+
+app.fetch = function(message) {
+  var request = app.init();
+  request.type = 'GET';
+  request.data = 'order=-createdAT';
+  return $.ajax(request);
+};
+
+//jQuery
+
+$(document).ready(function () {
+  var $chats = $('#chats');
 
   $.ajax({
       // This is the url you should use to communicate with the parse API server.
