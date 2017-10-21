@@ -77,8 +77,14 @@ app.renderRoom = function(room) {};
 //jQuery
 
 $(document).ready(function () {
-  var $chats = $('#chats');
-
+  app.fetch();
+  
+  //event handler to get data from room dropdown
+  //event handler to get data from user & text box submission
+    //send values collected
+    //fetch and render new messages
+  
+  //event handler to add room name
   
 
 });
