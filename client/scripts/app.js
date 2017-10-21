@@ -70,29 +70,44 @@ app.renderMessage = function(message) {
   var objectId = message.objectId;
   var text = DOMPurify.sanitize(message.text);
   var time = message.createdAt;
+
+  var safeName = roomname.split(' ').join('_').split('\'').join('').split('&').join('').split('?').join('').split('@').join('').split(';').join('').split('!').join('');
   
-  var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(roomname).addClass('chat');
+  var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(safeName).addClass('chat');
   var $chat = $('<ul></ul>').addClass(username).data('objectID', objectId);
-  var $user = $('<li><a href="#"></a></li>').text(username).addClass('user');
+  var $user = $('<li></li>').text(username).addClass('user');
   var $text = $(`<li>${text}</li>`).addClass('text');
+  var $roomname = $('<li></li>').text(safeName);
   var $time = $(`<li>${time}</li>`).addClass('time');
   $user.appendTo($chat);
   $text.appendTo($chat);
+  $roomname.appendTo($chat);
   $time.appendTo($chat);
   $chat.appendTo($chatContainer);
   $chatContainer.appendTo($('#chats'));
 
-  if (!(app._rooms.hasOwnProperty(roomname))) {
-    var $room = $(`<option>${roomname}</option>`);
+  
+
+  if (!(app._rooms.hasOwnProperty(safeName))) {
+    var $room = $(`<option>${roomname}</option>`).attr('id', safeName);
     $room.appendTo($('select'));
-    app._rooms[roomname] = roomname;
+    app._rooms[safeName] = roomname;
   }
 };
 
 
 
-app.renderRoom = function(room) {
+app.renderRoom = function(option) {
   //rendering a specific room from the dropdown
+  for (var room in app._rooms) {
+    if (room !== option) {
+      //var $roomName = $(`.${room}`);
+      //$roomName.toggleClass('hiddenRooms');
+      
+      $(`.${room}`).toggleClass('hiddenRooms');
+    }
+  }
+  
 };
 
 app.handleSubmit = function (room, messageText) {
@@ -141,5 +156,13 @@ $(document).ready(function () {
     app.handleUsernameClick(username);
     
   });
+  
+  $('#room').change(function() {
+    var option = $(this).val();
+    app.renderRoom(option)
+    
+
+  });
+ 
   //event handler to add room name
 });

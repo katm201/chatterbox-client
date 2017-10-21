@@ -183,3 +183,7 @@ li {
     display: block;
 }
 
+.hiddenRooms {
+  display: none;
+}
+
