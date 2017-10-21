@@ -40,7 +40,10 @@ app.fetch = function() {
   request.type = 'GET';
   request.data = 'order=-createdAt';
   request.success = function(data) { 
-    //call app.renderMessage on each data[i];
+    var messages = data.results;
+    for (var i = 0; i < messages.length; i++) {
+      app.renderMessage(messages[i]);
+    }
   };
   return $.ajax(request);
 };
@@ -50,7 +53,23 @@ app.clearMessages = function() {
 };
 
 app.renderMessage = function(message) {
-  //render individual messages here
+  //will need to escape username, roomname, and text
+  var username = message.username;
+  var roomname = message.roomname;
+  var objectId = message.objectId;
+  var text = message.text;
+  var time = message.createdAt;
+  
+  var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(roomname);
+  var $chat = $('<ul></ul>').addClass(username).data('objectID', objectId);
+  var $user = $(`<li>${username}</li>`).addClass('user');
+  var $text = $(`<li>${text}</li>`).addClass('text');
+  var $time = $(`<li>${time}</li>`).addClass('time');
+  $user.appendTo($chat);
+  $text.appendTo($chat);
+  $time.appendTo($chat);
+  $chat.appendTo($chatContainer);
+  $chatContainer.appendTo($('#chats'));
 };
 
 app.renderRoom = function(room) {};
