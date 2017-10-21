@@ -95,8 +95,20 @@ app.renderRoom = function(room) {
   //rendering a specific room from the dropdown
 };
 
-app.handleSubmit = function (argument) {
-  // body...
+app.handleSubmit = function (room, messageText) {
+  var unformattedName = window.location.search;
+  var index = unformattedName.indexOf('=') + 1;
+  var formattedName = unformattedName.slice(index);
+
+  var message = {
+    username: formattedName,
+    text: messageText,
+    roomname: room
+  };
+
+  app.send(message);
+  app.clearMessages();
+  app.fetch();
 };
 
 //jQuery
@@ -104,27 +116,15 @@ app.handleSubmit = function (argument) {
 $(document).ready(function () {
   app.fetch();
   
-  $('button').on('click', function(event) {
+  $('#send').submit(function(event) {
 
     var $textarea = $('textarea');
     var messageText = $textarea.val();
     var room = $('#room :selected').val();
 
     $textarea.val('');
-
-    var unformattedName = window.location.search;
-    var index = unformattedName.indexOf('=') + 1;
-    var formattedName = unformattedName.slice(index);
-
-    var message = {
-      username: formattedName,
-      text: messageText,
-      roomname: room
-    };
-
-    app.send(message);
-    app.clearMessages();
-    app.fetch();
+  
+    app.handleSubmit(room, messageText);
   
   });
 
