@@ -169,8 +169,7 @@ form select {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    font-weight: bold;
 }
 
 .chatContainer {
@@ -185,3 +184,4 @@ li {
 .submit {
     display: block;
 }
+

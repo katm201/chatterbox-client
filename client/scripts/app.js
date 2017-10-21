@@ -73,7 +73,7 @@ app.renderMessage = function(message) {
   
   var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(roomname);
   var $chat = $('<ul></ul>').addClass(username).data('objectID', objectId);
-  var $user = $(`<li>${username}</li>`).addClass('user');
+  var $user = $(`<li><a href="#">${username}</a></li>`).addClass('user');
   var $text = $(`<li>${text}</li>`).addClass('text');
   var $time = $(`<li>${time}</li>`).addClass('time');
   $user.appendTo($chat);
@@ -111,6 +111,12 @@ app.handleSubmit = function (room, messageText) {
   app.fetch();
 };
 
+app.handleUsernameClick = function(username) {
+  var $text = $('.' + username).find('.text');
+  $text.toggleClass('friend');
+  
+};
+
 //jQuery
 
 $(document).ready(function () {
@@ -128,7 +134,11 @@ $(document).ready(function () {
   
   });
 
+  $('#chats').on('click', '.chatContainer', function() {
+    var $message = $(this).children('ul');
+    var username = $message.attr('class');
+    app.handleUsernameClick(username);
+    
+  });
   //event handler to add room name
-  
-
 });
