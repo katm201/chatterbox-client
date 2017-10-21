@@ -71,9 +71,9 @@ app.renderMessage = function(message) {
   var text = DOMPurify.sanitize(message.text);
   var time = message.createdAt;
   
-  var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(roomname);
+  var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(roomname).addClass('chat');
   var $chat = $('<ul></ul>').addClass(username).data('objectID', objectId);
-  var $user = $(`<li><a href="#">${username}</a></li>`).addClass('user');
+  var $user = $('<li><a href="#"></a></li>').text(username).addClass('user');
   var $text = $(`<li>${text}</li>`).addClass('text');
   var $time = $(`<li>${time}</li>`).addClass('time');
   $user.appendTo($chat);
@@ -114,6 +114,7 @@ app.handleSubmit = function (room, messageText) {
 app.handleUsernameClick = function(username) {
   var $text = $('.' + username).find('.text');
   $text.toggleClass('friend');
+  event.stopPropagation();
   
 };
 

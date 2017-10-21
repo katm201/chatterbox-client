@@ -148,10 +148,12 @@ form select {
     padding: 5px;
     margin-bottom: 5px;
     background-color: #eee;
+    color: green;
 }
 
-.chat .username {
+.chat .user {
     font-weight: 800;
+    color: darkblue;
 }
 
 .chat:hover {
@@ -170,10 +172,6 @@ form select {
 
 .friend {
     font-weight: bold;
-}
-
-.chatContainer {
-    margin: 10px 0;
 }
 
 li {
