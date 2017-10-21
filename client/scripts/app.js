@@ -13,9 +13,6 @@ app.init = function() {
   return {
     url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
     contentType: 'application/json',
-    success: function (data) {
-      console.log('chatterbox: Message sent');
-    },
     error: function (data) {
       console.error('chatterbox: Failed to send message', data);
     }
@@ -32,16 +29,31 @@ app.send = function(message) {
   var result = app.init();
   result.type = 'POST';
   result.data = message;
+  result.success = function (data) {
+    console.log('chatterbox: Message sent');
+  };
   return $.ajax(result);
 };
 
-app.fetch = function(message) {
+app.fetch = function() {
   var request = app.init();
   request.type = 'GET';
   request.data = 'order=-createdAt';
-  var result = $.ajax(request);
-  return result;
+  request.success = function(data) { 
+    //call app.renderMessage on each data[i];
+  };
+  return $.ajax(request);
 };
+
+app.clearMessages = function() {
+  $('#chats').empty();
+};
+
+app.renderMessage = function(message) {
+  //render individual messages here
+};
+
+app.renderRoom = function(room) {};
 
 //jQuery
 
