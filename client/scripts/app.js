@@ -65,10 +65,10 @@ app.clearMessages = function() {
 
 app.renderMessage = function(message) {
   //will need to escape username, roomname, and text
-  var username = message.username;
-  var roomname = message.roomname;
+  var username = DOMPurify.sanitize(message.username);
+  var roomname = DOMPurify.sanitize(message.roomname);
   var objectId = message.objectId;
-  var text = message.text;
+  var text = DOMPurify.sanitize(message.text);
   var time = message.createdAt;
   
   var $chatContainer = $('<div></div>').addClass('chatContainer').addClass(roomname);
@@ -95,13 +95,16 @@ app.renderRoom = function(room) {
   //rendering a specific room from the dropdown
 };
 
+app.handleSubmit = function (argument) {
+  // body...
+};
+
 //jQuery
 
 $(document).ready(function () {
   app.fetch();
   
   $('button').on('click', function(event) {
-    debugger;
 
     var $textarea = $('textarea');
     var messageText = $textarea.val();
@@ -118,8 +121,6 @@ $(document).ready(function () {
       text: messageText,
       roomname: room
     };
-
-    console.log(message);
 
     app.send(message);
     app.clearMessages();
