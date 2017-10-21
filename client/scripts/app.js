@@ -6,7 +6,8 @@
 //METHODS:
 
 var app = {
-  server: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages'
+  server: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
+  _rooms: {}
 };
 
 app.init = function() {
@@ -26,26 +27,36 @@ app.init = function() {
   // };
 
 app.send = function(message) {
-  var result = app.init();
-  result.type = 'POST';
-  result.data = message;
-  result.success = function (data) {
-    console.log('chatterbox: Message sent');
-  };
-  return $.ajax(result);
+  $.ajax({
+    url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
+    type: 'POST',
+    data: JSON.stringify(message),
+    contentType: 'application/json',
+    success: function (data) {
+      console.log('chatterbox: Message sent');
+    },
+    error: function (data) {
+      console.error('chatterbox: Failed to send message', data);
+    }
+  });
 };
 
 app.fetch = function() {
-  var request = app.init();
-  request.type = 'GET';
-  request.data = 'order=-createdAt';
-  request.success = function(data) { 
-    var messages = data.results;
-    for (var i = 0; i < messages.length; i++) {
-      app.renderMessage(messages[i]);
+  $.ajax({
+    url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
+    type: 'GET',
+    data: 'order=-createdAt',
+    contentType: 'application/json',
+    success: function (data) {
+      var messages = data.results;
+      for (var i = 0; i < messages.length; i++) {
+        app.renderMessage(messages[i]);
+      }
+    },
+    error: function (data) {
+      console.error('chatterbox: Failed to send message', data);
     }
-  };
-  return $.ajax(request);
+  });
 };
 
 app.clearMessages = function() {
@@ -70,20 +81,52 @@ app.renderMessage = function(message) {
   $time.appendTo($chat);
   $chat.appendTo($chatContainer);
   $chatContainer.appendTo($('#chats'));
+
+  if (!(app._rooms.hasOwnProperty(roomname))) {
+    var $room = $(`<option>${roomname}</option>`);
+    $room.appendTo($('select'));
+    app._rooms[roomname] = roomname;
+  }
 };
 
-app.renderRoom = function(room) {};
+
+
+app.renderRoom = function(room) {
+  //rendering a specific room from the dropdown
+};
 
 //jQuery
 
 $(document).ready(function () {
   app.fetch();
   
-  //event handler to get data from room dropdown
-  //event handler to get data from user & text box submission
-    //send values collected
-    //fetch and render new messages
+  $('button').on('click', function(event) {
+    debugger;
+
+    var $textarea = $('textarea');
+    var messageText = $textarea.val();
+    var room = $('#room :selected').val();
+
+    $textarea.val('');
+
+    var unformattedName = window.location.search;
+    var index = unformattedName.indexOf('=') + 1;
+    var formattedName = unformattedName.slice(index);
+
+    var message = {
+      username: formattedName,
+      text: messageText,
+      roomname: room
+    };
+
+    console.log(message);
+
+    app.send(message);
+    app.clearMessages();
+    app.fetch();
   
+  });
+
   //event handler to add room name
   
 
