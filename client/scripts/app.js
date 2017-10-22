@@ -77,7 +77,7 @@ var app = {
           // stores the ID of the most recent message
           app.lastMessageId = mostRecentMessage.objectId;
         }
-      }
+      },
       error: function(error) {
         console.error('Chatterbox failed to fetch messages', error);
       }
@@ -157,6 +157,7 @@ var app = {
   },
 
   handleUsernameClick: function(event) {
+    debugger;
     // get username from data attribute
     var username = $(event.target).data('username');
 
@@ -165,7 +166,7 @@ var app = {
       app.friends[username] = !app.friends[username];
 
       // escape the username in case it contains a quote
-      var selector = 'data-username"' + username.replace(/"/g, '\\\"') + '"]';
+      var selector = '[data-username="' + username.replace(/"/g, '\\\"') + '"]';
 
       // add friend class to all that user's messages
       var $usernames = $(selector).toggleClass('friend');
