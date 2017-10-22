@@ -157,7 +157,6 @@ var app = {
   },
 
   handleUsernameClick: function(event) {
-    debugger;
     // get username from data attribute
     var username = $(event.target).data('username');
 
