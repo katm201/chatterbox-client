@@ -46,7 +46,7 @@ var app = {
       success: function (data) {
         // Clear messages input
         app.$message.val('');
-
+        
         // Trigger a fetch to update the messages, pass true to animate
         app.fetch();
       },
@@ -65,12 +65,12 @@ var app = {
       success: function(data) {
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
-        // data = JSON.parse(data);
+
         // Store messages for caching later
         app.messages = data.results;
-
+        console.log('data: ', data);
         // Get the last message
-        var mostRecentMessage = data.results[data.results.length - 1];
+        var mostRecentMessage = data.results[0];
 
         // Only bother updating the DOM if we have a new message
         if (mostRecentMessage.objectId !== app.lastMessageId) {
